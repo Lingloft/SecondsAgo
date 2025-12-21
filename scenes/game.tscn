@@ -615,6 +615,7 @@ horizontal_alignment = 1
 [node name="Bullet" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("6_p57ef")]
 visible = false
 material = SubResource("CanvasItemMaterial_gee14")
+position = Vector2(0, -1)
 max_contacts_reported = 10
 camera = NodePath("../Camera")
 
@@ -652,4 +653,5 @@ color = Color(0.737193, 0.7371929, 0.7371929, 1)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_u5sy4")
 
+[connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="TimerLoop" to="." method="_on_timer_loop_timeout"]

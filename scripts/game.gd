@@ -4,6 +4,8 @@ extends Node2D
 # 获取timer节点的时间
 @export var timer: Timer
 @onready var loop_label: Label = $LoopLabel
+# 相机
+@onready var camera: Camera2D = %Camera
 func _physics_process(_delta: float) -> void:
 	Global.time = snappedf(timer.time_left, 0.01)
 	loop_label.text = "LOOP: " + str(Global.loop) + " TIME: " + str(Global.time)
@@ -22,3 +24,8 @@ func _on_timer_loop_timeout() -> void:
 	add_child(ghostp)
 	# 进入下一循环
 	Global.loop += 1
+
+
+func _on_player_hit() -> void:
+	# 相机震动
+	camera.shake_once()

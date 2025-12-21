@@ -1,6 +1,6 @@
 extends RigidBody2D
 var is_clone := false
-var force := 20000 # 力大小
+var force := 10000 # 力大小
 var direction := Vector2.ZERO
 @export var camera: Camera2D
 func _ready() -> void:
@@ -14,5 +14,6 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_body_entered(_body) -> void:
+	# 如果是玩家
 	camera.shake_once()
 	

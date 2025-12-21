@@ -6,8 +6,8 @@ extends CharacterBody2D
 @export var friction: float = 1500
 @export var bullet: RigidBody2D
 # 子弹发射时间计时
-var shoot_timer:= 1.0
-
+var shoot_timer := 1.0
+signal hit
 
 func _physics_process(delta: float) -> void:
 	# 获取输入方向
@@ -41,7 +41,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-
 	# 射击
 	shoot_timer += delta
 	if Input.is_action_just_pressed("shoot") and shoot_timer > 1:
@@ -60,4 +59,11 @@ func _physics_process(delta: float) -> void:
 		# 重置计时器
 		shoot_timer = 0.0
 
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	# 如果是克隆的子弹
+	if body is RigidBody2D and body.is_clone:
+		hit.emit()
+		print("hit")
 		

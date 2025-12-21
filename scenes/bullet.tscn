@@ -8,7 +8,7 @@ friction = 0.0
 bounce = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
-radius = 4.0
+radius = 3.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y25gk"]
 atlas = ExtResource("1_mkf8s")
@@ -27,7 +27,7 @@ animations = [{
 
 [node name="Bullet" type="RigidBody2D"]
 collision_layer = 4
-collision_mask = 8
+collision_mask = 40
 physics_material_override = SubResource("PhysicsMaterial_y25gk")
 gravity_scale = 0.0
 continuous_cd = 2
@@ -40,6 +40,7 @@ script = ExtResource("1_y25gk")
 shape = SubResource("CircleShape2D_y25gk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, 0)
 sprite_frames = SubResource("SpriteFrames_l5glv")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
