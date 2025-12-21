@@ -2,7 +2,7 @@ extends Camera2D
 
 @export var target: Node2D  # 相机跟随的目标节点
 @export var speed: float = 12.0  # 相机移动速度
-@export var shake:= true
+@export var shake:= false
 var amplitude := 3
 func _physics_process(delta: float) -> void:
 	# 获取目标节点的世界坐标
