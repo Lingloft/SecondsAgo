@@ -565,7 +565,7 @@ hue_variation_max = 0.99999994
 [sub_resource type="Environment" id="Environment_u5sy4"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 0.95
+glow_intensity = 2.0
 glow_bloom = 1.0
 glow_hdr_threshold = 0.55
 glow_hdr_scale = 0.0
@@ -602,7 +602,6 @@ target = NodePath("../Player")
 [node name="TimerLoop" type="Timer" parent="."]
 process_callback = 0
 wait_time = 10.0
-autostart = true
 
 [node name="LoopLabel" type="Label" parent="."]
 offset_left = -36.0
@@ -639,8 +638,8 @@ shape = SubResource("WorldBoundaryShape2D_gee14")
 shape = SubResource("WorldBoundaryShape2D_u5sy4")
 
 [node name="Particles" type="GPUParticles2D" parent="."]
-visible = false
 material = SubResource("CanvasItemMaterial_u5sy4")
+emitting = false
 sub_emitter = NodePath(".")
 texture = ExtResource("7_u5sy4")
 lifetime = 0.47000000000000003
@@ -648,10 +647,13 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_u5sy4")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.737193, 0.7371929, 0.7371929, 1)
+color = Color(0.48452926, 0.48452926, 0.48452926, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_u5sy4")
+
+[node name="Bullets" type="Node2D" parent="."]
+unique_name_in_owner = true
 
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="TimerLoop" to="." method="_on_timer_loop_timeout"]

@@ -50,14 +50,19 @@ func _physics_process(delta: float) -> void:
 		bullet_clone.is_clone = true
 		# 设置可见
 		bullet_clone.visible = true
-		# 设置位置
-		bullet_clone.global_position = global_position
+		# 设置位置，在玩家位置之外的位置，防止一开始就碰到角色然后死亡，根据鼠标位置增加一些偏移
+		bullet_clone.global_position = global_position + (get_global_mouse_position() - global_position).normalized() * 20
 		# 设置方向，将鼠标坐标转换为方向向量
 		bullet_clone.direction = (get_global_mouse_position() - bullet_clone.global_position).normalized()
-		# 添加到场景，根节点，不是到玩家节点
-		get_tree().root.call_deferred("add_child", bullet_clone)
-		# 重置计时器
+		# 添加bullets节点，不是到玩家节点
+		%Bullets.add_child(bullet_clone)
+		# 重置发射计时器
 		shoot_timer = 0.0
+		# 记录数据: 使用字符串键存储
+		Global.bullet_data[Global.time] = {
+			"position": bullet_clone.global_position,
+			"direction": bullet_clone.direction
+		}
 
 
 
