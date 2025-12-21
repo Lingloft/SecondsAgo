@@ -1,5 +1,5 @@
 extends Node
 var loop := 1
-var time := 5.0
+var time := 10.0
 var player_data := {}
 var bullet_data := {}

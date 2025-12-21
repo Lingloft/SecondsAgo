@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://dsggfn1u1ve5u"]
+[gd_scene load_steps=24 format=4 uid="uid://dsggfn1u1ve5u"]
 
 [ext_resource type="Script" uid="uid://bfy86qj5ihtlu" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://baxqidsj34v2g" path="res://assets/tilesets/map/map.png" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://f018vcx0tgvp" path="res://scenes/ghost_player.tscn" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://b2n6gwk6gtwb7" path="res://scenes/bullet.tscn" id="6_p57ef"]
+[ext_resource type="Texture2D" uid="uid://bdtbw44yqk1f6" path="res://assets/tilesets/五角星.svg" id="7_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
 texture = ExtResource("3_lnu2h")
@@ -511,6 +512,9 @@ physics_layer_0/collision_mask = 0
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_p57ef")
 sources/0 = SubResource("TileSetAtlasSource_lbhrr")
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gee14"]
+blend_mode = 1
+
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_u5sy4"]
 friction = 0.0
 bounce = 1.0
@@ -530,6 +534,42 @@ distance = 119.0
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_u5sy4"]
 normal = Vector2(-0.018746706, -0.9998243)
 distance = 132.99536
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_u5sy4"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_u5sy4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.31984204), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_gee14"]
+curve = SubResource("Curve_u5sy4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u5sy4"]
+particle_flag_disable_z = true
+angle_min = -10.4999895
+angle_max = 92.500015
+velocity_pivot = Vector3(-0.53, -0.37, 0)
+direction = Vector3(0, -3.42, 0)
+spread = 95.0
+flatness = 0.541
+initial_velocity_min = 21.63
+initial_velocity_max = 34.88
+gravity = Vector3(0, 98, 0)
+scale_min = 0.02
+scale_max = 0.04
+alpha_curve = SubResource("CurveTexture_gee14")
+hue_variation_min = -1.0
+hue_variation_max = 0.99999994
+
+[sub_resource type="Environment" id="Environment_u5sy4"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.95
+glow_bloom = 1.0
+glow_hdr_threshold = 0.55
+glow_hdr_scale = 0.0
+glow_hdr_luminance_cap = 256.0
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("ghostp_player", "timer")]
 script = ExtResource("1_lbhrr")
@@ -561,7 +601,7 @@ target = NodePath("../Player")
 
 [node name="TimerLoop" type="Timer" parent="."]
 process_callback = 0
-wait_time = 5.0
+wait_time = 10.0
 autostart = true
 
 [node name="LoopLabel" type="Label" parent="."]
@@ -574,6 +614,7 @@ horizontal_alignment = 1
 
 [node name="Bullet" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("6_p57ef")]
 visible = false
+material = SubResource("CanvasItemMaterial_gee14")
 max_contacts_reported = 10
 camera = NodePath("../Camera")
 
@@ -595,5 +636,20 @@ shape = SubResource("WorldBoundaryShape2D_gee14")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
 shape = SubResource("WorldBoundaryShape2D_u5sy4")
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_u5sy4")
+sub_emitter = NodePath(".")
+texture = ExtResource("7_u5sy4")
+lifetime = 0.47000000000000003
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_u5sy4")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.737193, 0.7371929, 0.7371929, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u5sy4")
 
 [connection signal="timeout" from="TimerLoop" to="." method="_on_timer_loop_timeout"]

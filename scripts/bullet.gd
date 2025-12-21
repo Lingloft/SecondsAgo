@@ -1,6 +1,6 @@
 extends RigidBody2D
 var is_clone := false
-var force := 30000 # 力大小
+var force := 20000 # 力大小
 var direction := Vector2.ZERO
 @export var camera: Camera2D
 func _ready() -> void:
