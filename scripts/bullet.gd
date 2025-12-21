@@ -1,13 +1,12 @@
 extends RigidBody2D
 var is_clone := false
-# 方向，力
 var force := 30000 # 力大小
 var direction := Vector2.ZERO
-@export var camera: Camera2D  # 显式声明相机变量
+@export var camera: Camera2D
 func _ready() -> void:
-	if is_clone: apply_central_force(direction * force) # 施加力
-	# 摄像机震动
-	camera.shake_once()
+	if is_clone: 
+		apply_central_force(direction * force) # 施加力
+		camera.shake_once()# 摄像机震动
 
 func _physics_process(_delta: float) -> void:
 	# 子弹方向设定为速度方向
