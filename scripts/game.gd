@@ -10,6 +10,7 @@ extends Node2D
 func _ready():
 	timer.wait_time = Global.time
 	timer.start()
+	clone_enemy()
 
 func _physics_process(_delta: float) -> void:
 	Global.time = snappedf(timer.time_left, 0.01)
@@ -35,15 +36,8 @@ func _on_timer_loop_timeout() -> void:
 	ScreenFade()
 	# 删除所有子弹
 	for child in %Bullets.get_children(): child.queue_free()
-	# 克隆幽灵玩家
-	var ghostp = ghostp_player.duplicate()
-	# 设置为克隆体
-	ghostp.is_clone = true
-	# 设置可见
-	ghostp.visible = true
-	# 设置位置
-	ghostp.clone_id = Global.loop
-	add_child(ghostp)
+	clone()
+
 	# 进入下一循环
 	Global.loop += 1
 	
@@ -56,8 +50,39 @@ func _on_player_hit() -> void:
 
 # 屏幕遮罩刷新，用CanvasModulate
 func ScreenFade() -> void:
+	# 记录当前color
+	var current_color = $CanvasModulate.color
 	# 设置color为全白
 	$CanvasModulate.color = Color(1, 1, 1, 1)
-	create_tween().tween_property($CanvasModulate, "color", Color(0.35, 0.35, 0.35, 1), 0.5)
+	create_tween().tween_property($CanvasModulate, "color", current_color, 0.5)
 
+
+func clone() -> void:
+	clone_enemy()
+	clone_ghost_player()
 	
+func clone_ghost_player() -> void:	
+	# 克隆幽灵玩家
+	var ghostp = $GhostPlayer.duplicate()
+	# 设置为克隆体
+	ghostp.is_clone = true
+	# 设置可见
+	ghostp.visible = true
+	# 设置位置
+	ghostp.clone_id = Global.loop
+	%GhostPlayers.add_child(ghostp)
+
+func clone_enemy() -> void:
+	# 克隆敌人
+	var enemy_clone = $Enemy.duplicate()
+	enemy_clone.is_clone = true
+	enemy_clone.visible = true
+	enemy_clone.clone_id = Global.loop
+	# 设置初始位置为玩家附近随机位置
+	var random_pos = Vector2(
+		randf_range(ghostp_player.global_position.x - 100, ghostp_player.global_position.x + 100),
+		randf_range(ghostp_player.global_position.y - 100, ghostp_player.global_position.y + 100)
+	)
+	enemy_clone.global_position = random_pos
+	
+	%Enemies.add_child(enemy_clone)

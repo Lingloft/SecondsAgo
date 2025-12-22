@@ -9,8 +9,8 @@ func _physics_process(delta: float) -> void:
 	var playerPos = target.global_position
 	# 获取鼠标的世界坐标
 	var mousePos = get_global_mouse_position()
-	# 计算玩家和鼠标之间的1/3处(靠近玩家的位置)
-	var newPos = playerPos.lerp(mousePos, 1.0 / 3.0)
+	# 计算玩家和鼠标之间的1/4处(靠近玩家的位置)
+	var newPos = playerPos.lerp(mousePos, 1.0 / 4.0)
 	# 平滑移动相机到新位置
 	global_position = global_position.lerp(newPos, delta * speed)
 	# 相机抖动
