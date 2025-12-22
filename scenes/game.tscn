@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://dsggfn1u1ve5u"]
+[gd_scene load_steps=22 format=4 uid="uid://dsggfn1u1ve5u"]
 
 [ext_resource type="Script" uid="uid://bfy86qj5ihtlu" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cqfsbdepu72lu" path="res://scenes/enemy.tscn" id="4_gee14"]
 [ext_resource type="PackedScene" uid="uid://f018vcx0tgvp" path="res://scenes/ghost_player.tscn" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://b2n6gwk6gtwb7" path="res://scenes/bullet.tscn" id="6_p57ef"]
+[ext_resource type="FontFile" uid="uid://blotr6kyvtefm" path="res://assets/fonts/MineLike.ttf" id="7_0tnpc"]
 [ext_resource type="Texture2D" uid="uid://bdtbw44yqk1f6" path="res://assets/tilesets/五角星.svg" id="7_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
@@ -513,6 +514,9 @@ physics_layer_0/collision_mask = 0
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_p57ef")
 sources/0 = SubResource("TileSetAtlasSource_lbhrr")
 
+[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
+font = ExtResource("7_0tnpc")
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gee14"]
 blend_mode = 1
 
@@ -593,6 +597,7 @@ offset_top = -67.0
 offset_right = 60.0
 offset_bottom = -44.0
 text = "LOOP:1TIME:10"
+label_settings = SubResource("LabelSettings_vtaks")
 horizontal_alignment = 1
 
 [node name="Bullet" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("6_p57ef")]
