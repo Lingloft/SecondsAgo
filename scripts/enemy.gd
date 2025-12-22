@@ -10,6 +10,7 @@ func _physics_process(delta: float) -> void:
 		# 向玩家移动
 		# 获取玩家位置
 		# 先确保时间存在
+		if not Global.player_data.has(Global.loop):return
 		if not Global.player_data[Global.loop].has(Global.time):return
 		var player_position = Global.player_data[Global.loop][Global.time]["position"]
 		# 根据玩家与自己的相对位置决定翻转
@@ -21,6 +22,7 @@ func _physics_process(delta: float) -> void:
 		position += direction * speed * delta
 
 		Global.enemy_data[Global.loop] = {}
+		
 		Global.enemy_data[Global.loop][Global.time] = {}
 		Global.enemy_data[Global.loop][Global.time][clone_id] = {}
 

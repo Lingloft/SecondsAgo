@@ -9,6 +9,8 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	if Global.player_data.size() > 0 and is_clone:
+		# 确保时间存在
+		if not Global.player_data[clone_id].has(Global.time):return
 		var data = Global.player_data[clone_id][Global.time]
 		global_position = data["position"]
 		animation.play(data["animation"])

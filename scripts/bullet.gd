@@ -1,6 +1,6 @@
 extends RigidBody2D
 var is_clone := false
-var force := 10000 # 力大小
+var force := 50000 # 力大小
 var direction := Vector2.ZERO
 @export var camera: Camera2D
 # 子弹诞生时间，防止在玩家位置一生成就命中玩家

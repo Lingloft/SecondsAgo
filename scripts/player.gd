@@ -9,6 +9,7 @@ extends CharacterBody2D
 var shoot_timer := 1.0
 var is_dead := false
 signal hit
+signal restart
 
 func _physics_process(delta: float) -> void:
 	if is_dead: return
@@ -79,9 +80,4 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		animation.play("death")
 		# 等待0.1s后重启游戏
 		await get_tree().create_timer(0.3).timeout
-		# 重启游戏,彻底重启,清除所有数据
-		Global.loop = 1
-		Global.time = 10.0
-		Global.player_data = {}
-		Global.bullet_data = {}
-		get_tree().reload_current_scene()
+		restart.emit()

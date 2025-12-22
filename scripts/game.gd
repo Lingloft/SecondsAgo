@@ -8,7 +8,7 @@ extends Node2D
 @onready var camera: Camera2D = %Camera
 
 func _ready():
-	timer.wait_time = Global.time
+	timer.wait_time = Global.wait_time
 	timer.start()
 	clone_enemy()
 
@@ -86,3 +86,26 @@ func clone_enemy() -> void:
 	enemy_clone.global_position = random_pos
 	
 	%Enemies.add_child(enemy_clone)
+
+# 重启游戏
+func restart_game() -> void:
+	# 重置循环
+	Global.loop = 1
+	# 重置玩家数据
+	Global.player_data = {}
+	# 重置子弹数据
+	Global.bullet_data = {}
+	# 重置敌人数据
+	Global.enemy_data = {}
+	# 重置敌人
+	for child in %Enemies.get_children(): child.queue_free()
+	# 重置幽灵玩家
+	for child in %GhostPlayers.get_children(): child.queue_free()
+	# 重置所有子弹
+	for child in %Bullets.get_children(): child.queue_free()
+	# 重新开始游戏
+	ScreenFade()
+	get_tree().reload_current_scene()
+
+func _on_player_restart() -> void:
+	restart_game()
