@@ -7,7 +7,7 @@ extends CharacterBody2D
 @export var bullet: RigidBody2D
 @export var fire_rate: float = 1.0
 
-var shoot_cooldown: float = 0.0
+var shoot_cooldown: float = 1.0
 var is_dead: bool = false
 
 signal hit
