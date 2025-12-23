@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const speed := 30
+@export var speed := 30
 var is_clone := false
 var is_dead := false
 var clone_id := 1

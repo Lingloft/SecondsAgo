@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cqfsbdepu72lu" path="res://scenes/enemy.tscn" id="4_gee14"]
 [ext_resource type="PackedScene" uid="uid://f018vcx0tgvp" path="res://scenes/ghost_player.tscn" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://b2n6gwk6gtwb7" path="res://scenes/bullet.tscn" id="6_p57ef"]
-[ext_resource type="AudioStream" uid="uid://dkfqvrgi0tus7" path="res://assets/sounds/shoot-f.ogg" id="8_gee14"]
+[ext_resource type="AudioStream" uid="uid://bjr55uf0twrdt" path="res://assets/sounds/shoot-g.ogg" id="8_gee14"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
 texture = ExtResource("3_lnu2h")
@@ -625,9 +625,10 @@ unique_name_in_owner = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="Shoot" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_gee14")
 
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="restart" from="Player" to="." method="_on_player_restart"]
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
 [connection signal="timeout" from="TimerLoop" to="." method="_on_timer_loop_timeout"]

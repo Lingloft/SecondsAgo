@@ -43,9 +43,10 @@ func _on_player_hit() -> void:
 
 func _fade_screen() -> void:
 	# 屏幕过渡效果
-	var current_color = $CanvasModulate.color
-	$CanvasModulate.color = Color(1, 1, 1, 1)
-	create_tween().tween_property($CanvasModulate, "color", current_color, 0.5)
+	# 修改WorldEnvironment的glow_intensity值
+	var glow_intensity = $WorldEnvironment.environment.glow_intensity
+	$WorldEnvironment.environment.glow_intensity = 10
+	create_tween().tween_property($WorldEnvironment.environment, "glow_intensity", glow_intensity, 0.8)
 
 func _spawn_enemies_and_ghosts() -> void:
 	# 生成敌人
@@ -53,14 +54,9 @@ func _spawn_enemies_and_ghosts() -> void:
 	enemy_clone.is_clone = true
 	enemy_clone.visible = true
 	enemy_clone.clone_id = Global.loop
-	
+	var random = Vector2(randf_range(-100, 100),randf_range(-100, 100))
+	enemy_clone.global_position = ghost_player.global_position + random
 	# 随机位置（玩家附近）
-	var random_pos = Vector2(
-		randf_range(ghost_player.global_position.x - 100, ghost_player.global_position.x + 100),
-		randf_range(ghost_player.global_position.y - 100, ghost_player.global_position.y + 100)
-	)
-	enemy_clone.global_position = random_pos
-	
 	%Enemies.add_child(enemy_clone)
 
 	# 生成幽灵玩家
@@ -77,13 +73,16 @@ func _on_player_restart() -> void:
 	Global.bullet_data = {}
 	Global.enemy_data = {}
 	
+	
 	# 清除所有实体
 	for container in ["Enemies", "GhostPlayers", "Bullets"]:
 		_clear_entities(container)
 	
 	# 淡入并重新加载场景
-	_fade_screen()
 	get_tree().reload_current_scene()
+	_fade_screen()
+	
+	$WorldEnvironment.environment.glow_intensity = 2.0
 
 func _clear_entities(container_name: String) -> void:
 	# 清除指定容器中的所有实体
@@ -105,3 +104,8 @@ func _spawn_enemy() -> void:
 	enemy_clone.global_position = random_pos
 	
 	%Enemies.add_child(enemy_clone)
+
+
+func _on_player_shoot() -> void:
+	# 播放射击音效
+	$Shoot.play()

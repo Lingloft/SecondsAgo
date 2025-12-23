@@ -12,6 +12,7 @@ var is_dead: bool = false
 
 signal hit
 signal restart
+signal shoot
 
 func _physics_process(delta: float) -> void:
 	if is_dead: return
@@ -40,6 +41,7 @@ func _update_shooting(delta: float) -> void:
 	shoot_cooldown += delta
 	
 	if Input.is_action_just_pressed("shoot") and shoot_cooldown >= fire_rate:
+		shoot.emit()
 		# 创建并配置子弹
 		var bullet_clone = bullet.duplicate()
 		bullet_clone.is_clone = true
@@ -51,7 +53,9 @@ func _update_shooting(delta: float) -> void:
 		bullet_clone.direction = shoot_dir
 		
 		# 添加到子弹容器
+		await get_tree().create_timer(0.2).timeout
 		%Bullets.add_child(bullet_clone)
+		
 		shoot_cooldown = 0.0
 		
 		# 记录子弹数据

@@ -2,8 +2,8 @@ extends RigidBody2D
 
 # 子弹属性
 var is_clone := false
-var force := 30000
 var direction := Vector2.ZERO
+@export var force := 30000
 @export var camera: Camera2D
 
 # 防止立即碰撞
