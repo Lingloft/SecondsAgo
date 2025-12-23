@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dsggfn1u1ve5u"]
+[gd_scene load_steps=18 format=4 uid="uid://dsggfn1u1ve5u"]
 
 [ext_resource type="Script" uid="uid://bfy86qj5ihtlu" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cqfsbdepu72lu" path="res://scenes/enemy.tscn" id="4_gee14"]
 [ext_resource type="PackedScene" uid="uid://f018vcx0tgvp" path="res://scenes/ghost_player.tscn" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://b2n6gwk6gtwb7" path="res://scenes/bullet.tscn" id="6_p57ef"]
-[ext_resource type="Texture2D" uid="uid://bdtbw44yqk1f6" path="res://assets/tilesets/五角星.svg" id="7_u5sy4"]
+[ext_resource type="AudioStream" uid="uid://dkfqvrgi0tus7" path="res://assets/sounds/shoot-f.ogg" id="8_gee14"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
 texture = ExtResource("3_lnu2h")
@@ -513,37 +513,13 @@ physics_layer_0/collision_mask = 0
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_p57ef")
 sources/0 = SubResource("TileSetAtlasSource_lbhrr")
 
-[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gee14"]
 blend_mode = 1
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_u5sy4"]
-blend_mode = 1
+[sub_resource type="SystemFont" id="SystemFont_u5sy4"]
 
-[sub_resource type="Curve" id="Curve_u5sy4"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.31984204), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_gee14"]
-curve = SubResource("Curve_u5sy4")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u5sy4"]
-particle_flag_disable_z = true
-angle_min = -10.4999895
-angle_max = 92.500015
-velocity_pivot = Vector3(-0.53, -0.37, 0)
-direction = Vector3(0, -3.42, 0)
-spread = 95.0
-flatness = 0.541
-initial_velocity_min = 21.63
-initial_velocity_max = 34.88
-gravity = Vector3(0, 98, 0)
-scale_min = 0.02
-scale_max = 0.04
-alpha_curve = SubResource("CurveTexture_gee14")
-hue_variation_min = -1.0
-hue_variation_max = 0.99999994
+[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
+font_size = 60
 
 [sub_resource type="Environment" id="Environment_u5sy4"]
 background_mode = 3
@@ -554,9 +530,9 @@ glow_hdr_threshold = 0.55
 glow_hdr_scale = 0.0
 glow_hdr_luminance_cap = 256.0
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("ghostp_player", "timer")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("ghost_player", "timer")]
 script = ExtResource("1_lbhrr")
-ghostp_player = NodePath("GhostPlayer")
+ghost_player = NodePath("GhostPlayer")
 timer = NodePath("TimerLoop")
 
 [node name="Floor" type="TileMapLayer" parent="."]
@@ -590,15 +566,6 @@ target = NodePath("../Player")
 process_callback = 0
 wait_time = 10.0
 
-[node name="LoopLabel" type="Label" parent="."]
-offset_left = -58.0
-offset_top = -67.0
-offset_right = 60.0
-offset_bottom = -44.0
-text = "LOOP:1TIME:10"
-label_settings = SubResource("LabelSettings_vtaks")
-horizontal_alignment = 1
-
 [node name="Bullet" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("6_p57ef")]
 visible = false
 material = SubResource("CanvasItemMaterial_gee14")
@@ -606,14 +573,40 @@ position = Vector2(0, -1)
 max_contacts_reported = 10
 camera = NodePath("../Camera")
 
-[node name="Particles" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_u5sy4")
-emitting = false
-sub_emitter = NodePath(".")
-texture = ExtResource("7_u5sy4")
-lifetime = 0.47
-fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_u5sy4")
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LoopLabel" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -336.0
+offset_top = -2.0
+offset_right = 105.0
+offset_bottom = 81.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = SubResource("SystemFont_u5sy4")
+text = "LOOP:1"
+label_settings = SubResource("LabelSettings_vtaks")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -66.0
+offset_right = 375.0
+offset_bottom = 83.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = SubResource("SystemFont_u5sy4")
+text = "TIME:10.0"
+label_settings = SubResource("LabelSettings_vtaks")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.45452422, 0.45452428, 0.45452416, 1)
@@ -629,6 +622,11 @@ unique_name_in_owner = true
 
 [node name="GhostPlayers" type="Node2D" parent="."]
 unique_name_in_owner = true
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_gee14")
 
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="restart" from="Player" to="." method="_on_player_restart"]
