@@ -22,11 +22,11 @@ func _physics_process(delta: float) -> void:
 	# 更新诞生时间
 	birth_time += delta
 
-func _on_body_entered(body) -> void:
-	# 碰撞玩家或敌人
-	if body.name == "Player" or body.name == "Enemy":
-		camera.shake_once()
-		
-		# 延迟删除，避免出生即碰撞
-		if birth_time > 0.1 and is_clone:
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	print("bullet enter area " + area.name)
+	if is_clone:
+		if area.name == "EnemyArea":
+			camera.shake_once()
+			queue_free()
+		elif area.name == "PlayerArea" and birth_time > 0.2:
 			queue_free()

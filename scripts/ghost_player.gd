@@ -5,11 +5,6 @@ extends CharacterBody2D
 var is_clone := false
 var clone_id := 1
 
-func _ready() -> void:
-	# 设置循环次数显示
-	var label = $Label
-	label.text = str(clone_id)
-
 func _physics_process(_delta: float) -> void:
 	if is_clone and Global.player_data.size() > 0:
 		# 检查数据是否存在

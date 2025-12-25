@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cgjj2bmatef67"]
+[gd_scene load_steps=12 format=3 uid="uid://cgjj2bmatef67"]
 
 [ext_resource type="Texture2D" uid="uid://b8ytc3qup13h4" path="res://assets/sprites/player/player.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://rq1sw5se0i57" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://wsx3msb15q3c" path="res://assets/sprites/player/shadow.png" id="2_qhqgy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fjrip"]
 radius = 4.0
@@ -68,14 +69,22 @@ y_sort_enabled = true
 collision_mask = 8
 script = ExtResource("1_g2els")
 
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.35900003)
+z_index = -1
+position = Vector2(0, 4)
+scale = Vector2(0.060848277, 0.070734955)
+texture = ExtResource("2_qhqgy")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_fjrip")
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 32
-collision_mask = 4
+[node name="PlayerArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 64
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerArea"]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_g2els")
 
@@ -85,4 +94,4 @@ sprite_frames = SubResource("SpriteFrames_tuyoq")
 animation = &"idle"
 autoplay = "idle"
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="area_entered" from="PlayerArea" to="." method="_on_area_2d_area_entered"]

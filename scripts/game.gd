@@ -35,6 +35,7 @@ func _on_timer_loop_timeout() -> void:
 	# 循环结束处理
 	_fade_screen()
 	_clear_entities("Bullets")
+	_clear_entities("Enemies")
 	_spawn_enemies_and_ghosts()
 	Global.loop += 1
 
@@ -50,14 +51,18 @@ func _fade_screen() -> void:
 
 func _spawn_enemies_and_ghosts() -> void:
 	# 生成敌人
-	var enemy_clone = $Enemy.duplicate()
-	enemy_clone.is_clone = true
-	enemy_clone.visible = true
-	enemy_clone.clone_id = Global.loop
-	var random = Vector2(randf_range(-100, 100),randf_range(-100, 100))
-	enemy_clone.global_position = ghost_player.global_position + random
-	# 随机位置（玩家附近）
-	%Enemies.add_child(enemy_clone)
+	# 从enemy_data中获取敌人数据，根据loop克隆对应数量的敌人
+	var enemy_count = Global.enemy_data.size()
+	if enemy_count > 0:
+		for enemy_id in range(enemy_count):
+			var enemy_clone = $Enemy.duplicate()
+			enemy_clone.is_clone = true
+			enemy_clone.visible = true
+			enemy_clone.clone_id = enemy_id
+			var random = Vector2(randf_range(-100, 100),randf_range(-100, 100))
+			enemy_clone.global_position = ghost_player.global_position + random
+			# 随机位置（玩家附近）
+			%Enemies.add_child(enemy_clone)
 
 	# 生成幽灵玩家
 	var ghost_clone = $GhostPlayer.duplicate()
@@ -72,7 +77,6 @@ func _on_player_restart() -> void:
 	Global.player_data = {}
 	Global.bullet_data = {}
 	Global.enemy_data = {}
-	
 	
 	# 清除所有实体
 	for container in ["Enemies", "GhostPlayers", "Bullets"]:
@@ -108,4 +112,4 @@ func _spawn_enemy() -> void:
 
 func _on_player_shoot() -> void:
 	# 播放射击音效
-	$Shoot.play()
+	%ShootAudio.play()

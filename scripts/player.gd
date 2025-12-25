@@ -23,6 +23,7 @@ func _physics_process(delta: float) -> void:
 	_record_data()
 	
 	move_and_slide()
+	create_dust()
 
 func _update_movement(delta: float) -> void:
 	var move_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -76,13 +77,51 @@ func _record_data() -> void:
 		"flip_h": animation.flip_h
 	}
 
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	# 检查是否是来自子弹容器的成熟子弹
-	if body.get_parent() == %Bullets and body.birth_time > 0.1:
-		hit.emit()
-		is_dead = true
-		animation.play("death")
-		
-		# 等待后触发重启信号
-		await get_tree().create_timer(0.5).timeout
-		restart.emit()
+# 角色移动的时候创建脚步烟尘，通过随机在角色脚底创建一个小的烟雾贴图，在dust文件夹里随机选择一个
+func create_dust() -> void:
+	# 如果角色正在移动，才创建烟雾
+	if velocity.length() > 0.1:
+		var dust_path = "res://assets/sprites/player/dust/"
+		var dir = DirAccess.open(dust_path)
+		if dir:
+			var dust_files = dir.get_files()
+			if dust_files.size() > 0:
+				# 创建Sprite2D节点
+				var dust_sprite = Sprite2D.new()
+				# 随机选择贴图
+				var random_dust = dust_files[randi() % dust_files.size()]
+				# 只要.png文件，如果是其他文件，跳过
+				if not random_dust.ends_with(".png"):
+					return
+				
+				dust_sprite.texture = load(dust_path + random_dust)
+				dust_sprite.global_position = global_position + Vector2(randf_range(-5, 5), 3)
+				# 缩小
+				dust_sprite.scale = Vector2(0.05, 0.05)
+				%Dust.add_child(dust_sprite)
+				
+				# 可选：添加烟雾消失效果
+				var tween = create_tween()
+				tween.tween_property(dust_sprite, "modulate:a", 0, 0.5)
+				tween.tween_callback(dust_sprite.queue_free)
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	# 检查是否是敌人区域或者子弹区域
+	if not is_dead:
+		if area.name == "EnemyArea":
+			death()
+		# 检查是否是子弹区域
+		elif area.name == "BulletArea":
+			if area.get_parent().birth_time > 0.2 and area.get_parent().is_clone:
+				hit.emit()
+				death()
+
+func death() -> void:
+	print("player death")
+	%HurtAudio.play()
+	is_dead = true
+	animation.play("death")
+	# 等待后触发重启信号
+	await get_tree().create_timer(0.5).timeout
+	restart.emit()
