@@ -9,11 +9,11 @@ var clone_id := 0
 
 # 实现敌人出现，默认是warn动画，等待2s后播放move动画
 func _ready() -> void:
-	await get_tree().create_timer(2.0).timeout
-	animation.play("move")
+		await get_tree().create_timer(2.0).timeout
+		animation.play("move")
 
 func _physics_process(delta: float) -> void:
-	#如果是克隆且不是warn动画，则执行以下代码
+	
 	if  is_clone and animation.animation != "warn":
 		if clone_id == Global.loop:
 			# 检查玩家数据是否存在

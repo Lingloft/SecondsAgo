@@ -110,7 +110,9 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	# 检查是否是敌人区域或者子弹区域
 	if not is_dead:
 		if area.name == "EnemyArea":
-			death()
+			# 如果enemy不是在播放warn动画，忽略
+			if area.get_parent().animation.animation != "warn":
+				death()
 		# 检查是否是子弹区域
 		elif area.name == "BulletArea":
 			if area.get_parent().birth_time > 0.2 and area.get_parent().is_clone:
