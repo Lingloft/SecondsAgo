@@ -134,3 +134,4 @@ volume_db = -23.042
 [connection signal="restart" from="Player" to="." method="_on_player_restart"]
 [connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
 [connection signal="timeout" from="TimerLoop" to="." method="_on_timer_loop_timeout"]
+[connection signal="timeout" from="TimerLoop" to="Map" method="_on_timer_loop_timeout"]
