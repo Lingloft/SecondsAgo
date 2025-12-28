@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cqfsbdepu72lu"]
+[gd_scene load_steps=11 format=3 uid="uid://cqfsbdepu72lu"]
 
 [ext_resource type="Texture2D" uid="uid://b8ytc3qup13h4" path="res://assets/sprites/player/player.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://cqvjss4payvqy" path="res://scripts/enemy.gd" id="1_md0e3"]
+[ext_resource type="Texture2D" uid="uid://pkkwlwqcl1rv" path="res://assets/sprites/enemy/warning.png" id="3_4ra3w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c4w8v"]
 atlas = ExtResource("1_7p1mj")
@@ -42,6 +43,14 @@ animations = [{
 "loop": true,
 "name": &"move",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4ra3w")
+}],
+"loop": true,
+"name": &"warn",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xwavj"]
@@ -59,8 +68,8 @@ script = ExtResource("1_md0e3")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_c4w8v")
-animation = &"move"
-autoplay = "move"
+animation = &"warn"
+autoplay = "warn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)

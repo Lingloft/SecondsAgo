@@ -40,9 +40,8 @@ position = Vector2(12.988508, -6.625957)
 unique_name_in_owner = true
 
 [node name="Enemy" parent="." instance=ExtResource("4_gee14")]
-visible = false
 y_sort_enabled = true
-position = Vector2(-188, -2)
+position = Vector2(-303, 252)
 
 [node name="Player" parent="." node_paths=PackedStringArray("bullet") instance=ExtResource("1_uwrxv")]
 motion_mode = 1
