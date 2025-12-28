@@ -15,6 +15,12 @@ run/main_scene="uid://dsggfn1u1ve5u"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+driver/output_latency=1
+driver/output_latency.web=1
+driver/mix_rate=48000
+
 [autoload]
 
 Global="*res://scripts/global.gd"

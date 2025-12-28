@@ -3,17 +3,18 @@ extends CharacterBody2D
 @export var speed := 30
 var is_clone := false
 var is_dead := false
-var clone_id := 1
+var clone_id := 0
 
 @onready var animation: AnimatedSprite2D = $AnimatedSprite2D
 
 func _physics_process(delta: float) -> void:
-	if  is_clone and not is_dead:
+	if  is_clone:
 		if clone_id == Global.loop:
 			# 检查玩家数据是否存在
 			if not Global.player_data.has(Global.loop) or not Global.player_data[Global.loop].has(Global.time):
 				return
-
+			if animation.animation == "death":
+				return
 			# 获取玩家位置
 			var player_position = Global.player_data[Global.loop][Global.time]["position"]
 			
@@ -30,8 +31,9 @@ func _physics_process(delta: float) -> void:
 			if not Global.enemy_data[Global.loop].has(Global.time):
 				Global.enemy_data[Global.loop][Global.time] = {}
 				
-			Global.enemy_data[Global.loop][Global.time][clone_id] = {
+			Global.enemy_data[Global.loop][Global.time] = {
 				"position": global_position,
+				"animation": animation.animation,
 				"flip_h": animation.flip_h
 			}
 		else:
@@ -39,14 +41,17 @@ func _physics_process(delta: float) -> void:
 			if not Global.enemy_data.has(clone_id) or not Global.enemy_data[clone_id].has(Global.time):
 				return
 
-			# 获取敌人位置
-			var enemy_position = Global.enemy_data[clone_id][Global.time]["position"]
+			var data = Global.enemy_data[clone_id][Global.time]
+			if animation.animation == "death":
+				return
 
-			# 翻转动画
-			animation.flip_h = Global.enemy_data[clone_id][Global.time]["flip_h"]
+			# 设置位置
+			position = data["position"]
+			animation.flip_h = data["flip_h"]
+			animation.animation = data["animation"]
 
-			# 移动到敌人位置
-			position = enemy_position
+			
+			
 
 
 func _on_enemy_area_area_entered(area: Area2D) -> void:

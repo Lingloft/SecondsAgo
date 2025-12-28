@@ -10,7 +10,7 @@ extends Node2D
 func _ready():
 	timer.wait_time = Global.wait_time
 	timer.start()
-	_spawn_enemy()
+	_spawn_enemy(0)
 
 func _physics_process(_delta: float) -> void:
 	# 更新游戏时间和UI
@@ -52,17 +52,10 @@ func _fade_screen() -> void:
 func _spawn_enemies_and_ghosts() -> void:
 	# 生成敌人
 	# 从enemy_data中获取敌人数据，根据loop克隆对应数量的敌人
-	var enemy_count = Global.enemy_data.size()
-	if enemy_count > 0:
-		for enemy_id in range(enemy_count):
-			var enemy_clone = $Enemy.duplicate()
-			enemy_clone.is_clone = true
-			enemy_clone.visible = true
-			enemy_clone.clone_id = enemy_id
-			var random = Vector2(randf_range(-100, 100),randf_range(-100, 100))
-			enemy_clone.global_position = ghost_player.global_position + random
-			# 随机位置（玩家附近）
-			%Enemies.add_child(enemy_clone)
+	var enemy_count = Global.enemy_data.size()+1
+	print("enemy_count:", enemy_count)
+	for enemy_id in range(enemy_count):
+		_spawn_enemy(enemy_id)
 
 	# 生成幽灵玩家
 	var ghost_clone = $GhostPlayer.duplicate()
@@ -73,7 +66,7 @@ func _spawn_enemies_and_ghosts() -> void:
 
 func _on_player_restart() -> void:
 	# 重置游戏状态
-	Global.loop = 1
+	Global.loop = 0
 	Global.player_data = {}
 	Global.bullet_data = {}
 	Global.enemy_data = {}
@@ -93,12 +86,12 @@ func _clear_entities(container_name: String) -> void:
 	for entity in get_node("%" + container_name).get_children():
 		entity.queue_free()
 
-func _spawn_enemy() -> void:
+func _spawn_enemy(id: int) -> void:
 	# 初始生成敌人
 	var enemy_clone = $Enemy.duplicate()
 	enemy_clone.is_clone = true
 	enemy_clone.visible = true
-	enemy_clone.clone_id = Global.loop
+	enemy_clone.clone_id = id
 	
 	# 随机位置（玩家附近）
 	var random_pos = Vector2(

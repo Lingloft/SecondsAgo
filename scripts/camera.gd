@@ -21,7 +21,7 @@ func shake_once():
 	shake = true
 	
 	var timer = Timer.new()
-	timer.wait_time = 0.1
+	timer.wait_time = 0.2
 	timer.one_shot = true
 	add_child(timer)
 	timer.start()

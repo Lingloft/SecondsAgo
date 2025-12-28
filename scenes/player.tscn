@@ -77,12 +77,11 @@ scale = Vector2(0.060848277, 0.070734955)
 texture = ExtResource("2_qhqgy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_fjrip")
 
 [node name="PlayerArea" type="Area2D" parent="."]
 collision_layer = 16
-collision_mask = 64
+collision_mask = 96
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerArea"]
 position = Vector2(0, -5)

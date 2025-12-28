@@ -54,7 +54,7 @@ func _update_shooting(delta: float) -> void:
 		bullet_clone.direction = shoot_dir
 		
 		# 添加到子弹容器
-		await get_tree().create_timer(0.2).timeout
+		# await get_tree().create_timer(0.2).timeout
 		%Bullets.add_child(bullet_clone)
 		
 		shoot_cooldown = 0.0

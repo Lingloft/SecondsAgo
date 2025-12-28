@@ -1,7 +1,7 @@
 extends Node
 
 # 游戏全局变量
-var loop := 1              # 当前循环
+var loop := 0               # 当前循环
 var time := 10.0           # 游戏时间
 var wait_time := 10.0      # 循环时间
 

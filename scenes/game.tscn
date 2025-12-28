@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dsggfn1u1ve5u"]
+[gd_scene load_steps=15 format=3 uid="uid://dsggfn1u1ve5u"]
 
 [ext_resource type="Script" uid="uid://bfy86qj5ihtlu" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b2n6gwk6gtwb7" path="res://scenes/bullet.tscn" id="6_p57ef"]
 [ext_resource type="AudioStream" uid="uid://bjr55uf0twrdt" path="res://assets/sounds/shoot-g.ogg" id="8_gee14"]
 [ext_resource type="AudioStream" uid="uid://di4r5i77taohs" path="res://assets/sounds/hurt-d.ogg" id="9_0tnpc"]
+[ext_resource type="AudioStream" uid="uid://cwutf8vlea2s4" path="res://assets/sounds/BGM.mp3" id="10_vtaks"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gee14"]
 blend_mode = 1
@@ -21,10 +22,10 @@ font_size = 60
 [sub_resource type="Environment" id="Environment_u5sy4"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 2.0
+glow_intensity = 2.11
 glow_bloom = 1.0
-glow_hdr_threshold = 0.55
-glow_hdr_scale = 0.0
+glow_hdr_threshold = 0.49
+glow_hdr_scale = 0.14
 glow_hdr_luminance_cap = 256.0
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("ghost_player", "timer")]
@@ -40,6 +41,7 @@ unique_name_in_owner = true
 
 [node name="Enemy" parent="." instance=ExtResource("4_gee14")]
 visible = false
+y_sort_enabled = true
 position = Vector2(-188, -2)
 
 [node name="Player" parent="." node_paths=PackedStringArray("bullet") instance=ExtResource("1_uwrxv")]
@@ -123,6 +125,10 @@ stream = ExtResource("8_gee14")
 [node name="HurtAudio" type="AudioStreamPlayer2D" parent="Audio"]
 unique_name_in_owner = true
 stream = ExtResource("9_0tnpc")
+
+[node name="BGM" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("10_vtaks")
+volume_db = -23.042
 
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="restart" from="Player" to="." method="_on_player_restart"]
