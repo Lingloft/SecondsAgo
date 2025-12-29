@@ -40,6 +40,7 @@ position = Vector2(12.988508, -6.625957)
 unique_name_in_owner = true
 
 [node name="Enemy" parent="." instance=ExtResource("4_gee14")]
+visible = false
 y_sort_enabled = true
 position = Vector2(-303, 252)
 

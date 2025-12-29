@@ -37,8 +37,16 @@ signal hit  # 被击中信号
 signal restart  # 重启信号
 signal shoot  # 射击信号
 
+
+func _ready() -> void:
+	# 当show动画播放完立马切换到idle动画
+	animation.play("show")
+	await animation.animation_finished
+	animation.play("idle")
+	
+
 func _physics_process(delta: float) -> void:
-	if is_dead: return
+	if is_dead or animation.animation == "show": return
 	
 	update_movement(delta)
 	update_animation()

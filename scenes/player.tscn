@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://cgjj2bmatef67"]
+[gd_scene load_steps=18 format=3 uid="uid://cgjj2bmatef67"]
 
 [ext_resource type="Texture2D" uid="uid://b8ytc3qup13h4" path="res://assets/sprites/player/player.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://rq1sw5se0i57" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://wsx3msb15q3c" path="res://assets/sprites/player/shadow.png" id="2_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://dng2ndfwi5jdk" path="res://assets/sprites/player/show.png" id="4_dqkch"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fjrip"]
 radius = 4.0
@@ -30,6 +31,26 @@ region = Rect2(25, 0, 24, 24)
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("1_3vyb7")
 region = Rect2(50, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
+atlas = ExtResource("4_dqkch")
+region = Rect2(104, 0, 26, 59)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smehm"]
+atlas = ExtResource("4_dqkch")
+region = Rect2(78, 0, 26, 59)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur7pv"]
+atlas = ExtResource("4_dqkch")
+region = Rect2(52, 0, 26, 59)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4r1p"]
+atlas = ExtResource("4_dqkch")
+region = Rect2(26, 0, 26, 59)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
+atlas = ExtResource("4_dqkch")
+region = Rect2(0, 0, 26, 59)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tuyoq"]
 animations = [{
@@ -62,6 +83,26 @@ animations = [{
 "loop": true,
 "name": &"move",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjrip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smehm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur7pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4r1p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2wvv")
+}],
+"loop": false,
+"name": &"show",
+"speed": 16.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
@@ -90,7 +131,9 @@ shape = SubResource("CapsuleShape2D_g2els")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_tuyoq")
-animation = &"idle"
-autoplay = "idle"
+animation = &"show"
+autoplay = "show"
+frame = 4
+frame_progress = 1.0
 
 [connection signal="area_entered" from="PlayerArea" to="." method="_on_area_2d_area_entered"]
