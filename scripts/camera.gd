@@ -31,7 +31,7 @@ func shake_once() -> void:
 	shake = true  # 开启震动
 	
 	var timer: Timer = Timer.new()  # 创建临时计时器
-	timer.wait_time = 0.2  # 震动持续时间
+	timer.wait_time = 0.1  # 震动持续时间
 	timer.one_shot = true  # 设置为一次性触发
 	add_child(timer)  # 添加到场景树
 	timer.start()  # 启动计时器

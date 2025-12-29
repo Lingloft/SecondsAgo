@@ -20,7 +20,7 @@ extends RigidBody2D
 # 子弹核心属性
 var is_clone: bool = false  # 是否为克隆子弹（实际发射的子弹）
 var direction: Vector2 = Vector2.ZERO  # 子弹飞行方向
-@export var force: float = 10000.0  # 子弹初始力大小
+@export var force: float = 15000.0  # 子弹初始力大小
 @export var camera: Camera2D  # 相机节点引用，用于震动效果
 
 # 防止子弹立即碰撞自身的出生时间

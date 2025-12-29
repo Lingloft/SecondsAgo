@@ -25,6 +25,43 @@ size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu"]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Start" type="Button" parent="UI/MainMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 71
+text = "开始游戏"
+flat = true
+
+[node name="Exit" type="Button" parent="UI/MainMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 71
+text = "退出游戏"
+flat = true
+
+[node name="PauseMenu" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PauseMenu"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -37,22 +74,95 @@ offset_bottom = 161.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Start" type="Button" parent="UI/MainMenu/VBoxContainer"]
+[node name="Back" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
-text = "开始游戏"
+text = "返回"
 flat = true
 
-[node name="Setting" type="Button" parent="UI/MainMenu/VBoxContainer"]
+[node name="Restart" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
-text = "设置"
+text = "重玩"
 flat = true
 
-[node name="Exit" type="Button" parent="UI/MainMenu/VBoxContainer"]
+[node name="Cancel" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
-text = "退出游戏"
+text = "取消"
+flat = true
+
+[node name="GameOverMenu" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Back" type="Button" parent="UI/GameOverMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 71
+text = "返回"
+flat = true
+
+[node name="Restart" type="Button" parent="UI/GameOverMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 71
+text = "重玩"
+flat = true
+
+[node name="GameUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_bottom = 105.0
+grow_horizontal = 0
+
+[node name="Pause" type="Button" parent="UI/GameUI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 71
+text = "暂停"
 flat = true
 
 [node name="GameContainer" type="Node2D" parent="."]
+
+[connection signal="button_down" from="UI/MainMenu/VBoxContainer/Start" to="." method="_on_start_button_down"]
+[connection signal="button_down" from="UI/MainMenu/VBoxContainer/Exit" to="." method="_on_exit_button_down"]
+[connection signal="button_down" from="UI/PauseMenu/VBoxContainer/Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="UI/PauseMenu/VBoxContainer/Restart" to="." method="_on_restart_button_down"]
+[connection signal="button_down" from="UI/PauseMenu/VBoxContainer/Cancel" to="." method="_on_cancel_button_down"]
+[connection signal="button_down" from="UI/GameOverMenu/VBoxContainer/Back" to="." method="_on_back_button_down"]
+[connection signal="button_down" from="UI/GameOverMenu/VBoxContainer/Restart" to="." method="_on_restart_button_down"]
+[connection signal="button_down" from="UI/GameUI/VBoxContainer/Pause" to="." method="_on_pause_button_down"]
