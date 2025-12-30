@@ -25,7 +25,6 @@ driver/mix_rate=48000
 
 Global="*res://scripts/global.gd"
 EventBus="*res://scripts/autoload/event_bus.gd"
-StateManager="*res://scripts/autoload/state_manager.gd"
 
 [display]
 

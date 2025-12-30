@@ -11,7 +11,7 @@ extends RigidBody2D
 
 var direction: Vector2 = Vector2.ZERO # 飞行方向
 var birth_time: float = 0.0 # 出生时间，用于判断是否刚发射
-@export var force: float = 15000.0 # 推力大小，决定子弹飞行速度
+@export var force: float = 10000.0 # 推力大小，决定子弹飞行速度
 
 func _ready() -> void: # 节点进入场景树时调用
 	apply_central_force(direction * force) # 给子弹施加推力让它飞出去
