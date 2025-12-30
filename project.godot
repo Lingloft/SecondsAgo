@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="test"
-run/main_scene="uid://dsggfn1u1ve5u"
+run/main_scene="uid://dqqbblk6vnnqr"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -24,6 +24,8 @@ driver/mix_rate=48000
 [autoload]
 
 Global="*res://scripts/global.gd"
+EventBus="*res://scripts/autoload/event_bus.gd"
+StateManager="*res://scripts/autoload/state_manager.gd"
 
 [display]
 

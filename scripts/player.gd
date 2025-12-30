@@ -1,176 +1,70 @@
+"""
+玩家控制器
+这个文件控制玩家角色的所有行为。
+主要功能：
+1. 接收键盘输入控制玩家移动（WASD或方向键）
+2. 接收鼠标点击发射子弹
+3. 播放玩家的各种动画（出场、待机、移动、死亡）
+4. 移动时在脚下生成烟尘特效
+5. 每帧记录玩家状态到全局数据，供幽灵回放使用
+6. 检测与敌人或子弹的碰撞，触发死亡
+"""
 extends CharacterBody2D
 
-# ==============================================================================================
-# 文件功能：玩家控制模块
-# 设计目标：实现玩家的移动、射击、动画和数据记录
-# 核心逻辑：
-#   1. 玩家通过输入控制角色移动
-#   2. 玩家点击鼠标发射子弹
-#   3. 玩家移动时播放动画和生成灰尘效果
-#   4. 玩家状态记录到全局数据中
-#   5. 玩家碰撞到敌人或子弹时死亡
-# 模块间交互：
-#   - 发送hit和shoot信号给其他模块
-#   - 从全局数据获取和设置游戏状态
-#   - 生成子弹并添加到场景中
-# 主要函数：
-#   - death(): 处理玩家死亡逻辑
-#   - create_dust(): 生成移动灰尘效果
-# ==============================================================================================
-@onready var animation: AnimatedSprite2D = $AnimatedSprite2D  # 动画组件引用
+@onready var animation: AnimatedSprite2D = $AnimatedSprite2D # 获取动画精灵节点，用于播放各种动画
 
-# 玩家移动属性
-@export var speed: float = 200.0       # 移动速度
-@export var acceleration: float = 1000.0  # 加速度
-@export var friction: float = 1000.0     # 摩擦力
+@export var speed: float = 200.0 # 玩家最大移动速度，可在编辑器中调整
+@export var acceleration: float = 1000.0 # 加速度，决定玩家多快达到最大速度
+@export var friction: float = 1000.0 # 摩擦力，决定玩家松开按键后多快停下来
 
-# 射击属性
-@export var bullet: RigidBody2D         # 子弹模板
-@export var fire_rate: float = 1.0       # 射击频率（秒）
+var fire_rate: float = 1.0 # 射击间隔，两次射击之间至少间隔1秒
+var shoot_cooldown: float = 0.0 # 射击冷却计时器，记录距离上次射击过了多久
+var dead: bool = false # 玩家是否已死亡，死亡后不再响应输入
 
-# 内部状态
-var shoot_cooldown: float = 0.0          # 射击冷却时间
-var is_dead: bool = false                # 是否死亡
+func _ready() -> void: # 节点进入场景树时调用
+	animation.play("show") # 播放出场动画（玩家从地上冒出来）
+	await animation.animation_finished # 等待出场动画播放完毕
+	animation.play("idle") # 切换到待机动画
 
-# 信号定义
-signal hit  # 被击中信号
-signal restart  # 重启信号
-signal shoot  # 射击信号
-
-
-func _ready() -> void:
-	# 当show动画播放完立马切换到idle动画
-	animation.play("show")
-	await animation.animation_finished
-	animation.play("idle")
+func _physics_process(delta: float) -> void: # 每个物理帧调用，delta是距离上一帧的时间
+	if dead or animation.animation == "show": return # 如果死亡或正在播放出场动画，跳过所有逻辑
 	
-
-func _physics_process(delta: float) -> void:
-	if is_dead or animation.animation == "show": return
+	var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down") # 获取玩家输入的移动方向，返回一个单位向量
+	velocity = velocity.move_toward(dir * speed, (acceleration if dir else friction) * delta) # 根据输入方向平滑改变速度，有输入用加速度，没输入用摩擦力
 	
-	update_movement(delta)
-	update_animation()
-	update_shooting(delta)
-	record_data()
+	animation.play("move" if velocity.length() > 0.1 else "idle") # 如果在移动就播放移动动画，否则播放待机动画
+	animation.flip_h = get_global_mouse_position().x < global_position.x # 根据鼠标位置决定玩家朝向，鼠标在左边就翻转
 	
-	move_and_slide()
-	create_dust()
-
-func update_movement(delta: float) -> void:
-	var dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")  # 获取移动方向
-	var target: Vector2 = dir * speed  # 计算目标速度
+	shoot_cooldown += delta # 累加射击冷却时间
+	if Input.is_action_just_pressed("shoot") and shoot_cooldown >= fire_rate: # 如果按下射击键且冷却完毕
+		shoot_cooldown = 0.0 # 重置冷却时间
+		EventBus.shoot.emit(global_position, (get_global_mouse_position() - global_position).normalized()) # 发送射击信号，携带位置和朝向鼠标的方向
 	
-	# 处理X轴加速度和摩擦力
-	velocity.x = move_toward(velocity.x, target.x, (acceleration if dir.x != 0 else friction) * delta)
-	# 处理Y轴加速度和摩擦力
-	velocity.y = move_toward(velocity.y, target.y, (acceleration if dir.y != 0 else friction) * delta)
-
-func update_animation() -> void:
-	var is_moving: bool = velocity.length() > 0.1  # 检查是否在移动
-	animation.play("move" if is_moving else "idle")  # 播放对应动画
-	animation.flip_h = get_global_mouse_position().x < global_position.x  # 根据鼠标位置翻转
-
-func update_shooting(delta: float) -> void:
-	shoot_cooldown += delta  # 更新冷却时间
-	
-	# 检查射击条件
-	if Input.is_action_just_pressed("shoot") and shoot_cooldown >= fire_rate:
-		shoot.emit()  # 发送射击信号
-		
-		# 创建并配置子弹
-		var bullet_clone: RigidBody2D = bullet.duplicate()  # 克隆子弹模板
-		bullet_clone.is_clone = true  # 标记为实际发射的子弹
-		bullet_clone.visible = true  # 设置可见
-		bullet_clone.global_position = global_position  # 设置初始位置
-		
-		# 计算并设置射击方向
-		var shoot_dir: Vector2 = (get_global_mouse_position() - global_position).normalized()  # 朝向鼠标的单位向量
-		bullet_clone.direction = shoot_dir  # 设置子弹方向
-		
-		# 添加到子弹容器
-		%Bullets.add_child(bullet_clone)  # 将子弹添加到场景
-		
-		shoot_cooldown = 0.0  # 重置冷却时间
-		
-		# 记录子弹数据到全局
-		Global.bullet_data[Global.time] = {
-			"position": bullet_clone.global_position,  # 子弹位置
-			"direction": bullet_clone.direction  # 子弹方向
-		}
-
-func record_data() -> void:
-	# 确保玩家数据结构存在
-	if not Global.player_data.has(Global.loop):
-		Global.player_data[Global.loop] = {}  # 初始化当前循环的玩家数据
-	
-	# 记录玩家当前状态到全局数据
-	Global.player_data[Global.loop][Global.time] = {
-		"position": global_position,  # 当前位置
-		"animation": animation.animation,  # 当前动画
-		"flip_h": animation.flip_h  # 当前翻转状态
+	Global.player_data.get_or_add(Global.loop, {})[Global.time] = { # 记录当前状态到全局数据，供幽灵回放
+		"position": global_position, "animation": animation.animation, "flip_h": animation.flip_h # 记录位置、当前动画、是否翻转
 	}
-
-func create_dust() -> void:
-	# 检查是否在移动
-	if velocity.length() <= 0.1:
-		return  # 不移动则不生成灰尘
 	
-	# 灰尘资源路径
-	var dust_path: String = "res://assets/sprites/player/dust/"
-	var dir: DirAccess = DirAccess.open(dust_path)  # 打开灰尘资源目录
-	
-	# 检查目录是否存在
-	if dir:
-		var dust_files: PackedStringArray = dir.get_files()  # 获取所有灰尘文件
-		
-		# 检查是否有灰尘文件
-		if dust_files.size() > 0:
-			# 随机选择一个灰尘文件
-			var random_dust: String = dust_files[randi() % dust_files.size()]
-			
-			# 跳过非PNG文件
-			if not random_dust.ends_with(".png"):
-				return
-			
-			# 创建灰尘精灵
-			var dust_sprite: Sprite2D = Sprite2D.new()  # 创建新的精灵节点
-			dust_sprite.texture = load(dust_path + random_dust)  # 加载灰尘纹理
-			
-			# 设置灰尘位置和大小
-			dust_sprite.global_position = global_position + Vector2(randf_range(-5, 5), 3)  # 随机偏移位置
-			dust_sprite.scale = Vector2(0.05, 0.05)  # 缩小灰尘
-			
-			# 添加到灰尘容器
-			%Dust.add_child(dust_sprite)  # 将灰尘添加到场景
-			
-			# 创建灰尘消失动画
-			var tween: Tween = create_tween()  # 创建补间动画
-			tween.tween_property(dust_sprite, "modulate:a", 0, 0.5)  # 0.5秒内透明度变为0
-			tween.tween_callback(dust_sprite.queue_free)  # 动画结束后销毁灰尘
+	move_and_slide() # 执行移动，自动处理碰撞
+	if velocity.length() > 0.1: _spawn_dust() # 如果在移动就生成烟尘
 
-
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	# 检查是否已经死亡
-	if is_dead:
-		return
+func _spawn_dust() -> void: # 生成脚下的烟尘特效
+	var dust_files: Array = Array(DirAccess.get_files_at("res://assets/sprites/player/dust/")).filter(func(f): return f.ends_with(".png")) # 获取烟尘文件夹里所有png图片
+	if dust_files.is_empty(): return # 如果没有烟尘图片就跳过
 	
-	# 检查碰撞区域类型
-	if area.name == "EnemyArea":
-		# 检查敌人是否在警告状态
-		if area.get_parent().animation.animation != "warn":
-			death()  # 调用死亡函数
-	elif area.name == "BulletArea":
-		# 检查子弹是否是克隆的且超过安全时间
-		if area.get_parent().birth_time > 0.2 and area.get_parent().is_clone:
-			hit.emit()  # 发送被击中信号
-			death()  # 调用死亡函数
-
-func death() -> void:
-	print("player death")  # 打印死亡信息
-	%HurtAudio.play()  # 播放受伤音效
-	is_dead = true  # 标记为死亡
-	animation.play("death")  # 播放死亡动画
+	var dust := Sprite2D.new() # 创建一个新的精灵节点
+	dust.texture = load("res://assets/sprites/player/dust/" + dust_files.pick_random()) # 随机选一张烟尘图片作为纹理
+	dust.global_position = global_position + Vector2(randf_range(-5, 5), 3) # 设置位置在玩家脚下，稍微随机偏移
+	dust.scale = Vector2(0.05, 0.05) # 缩小烟尘图片
+	%Dust.add_child(dust) # 把烟尘添加到Dust容器节点
 	
-	# 等待后触发重启信号
-	await get_tree().create_timer(0.5).timeout  # 等待0.5秒
-	restart.emit()  # 发送重启信号
+	create_tween().tween_property(dust, "modulate:a", 0, 0.5).finished.connect(dust.queue_free) # 创建动画让烟尘0.5秒内淡出，淡出后删除
+
+func _on_area_2d_area_entered(area: Area2D) -> void: # 当玩家的碰撞区域与其他区域接触时调用
+	if dead: return # 已经死了就不处理
+	if (area.name == "EnemyArea" and area.get_parent().animation.animation != "warn") or \
+	   (area.name == "BulletArea" and area.get_parent().birth_time > 0.2): # 碰到敌人（非警告状态）或子弹（出生超过0.2秒）
+		dead = true # 标记为死亡
+		%HurtAudio.play() # 播放受伤音效
+		animation.play("death") # 播放死亡动画
+		await %HurtAudio.finished
+		EventBus.player_death.emit() # 发送玩家死亡信号

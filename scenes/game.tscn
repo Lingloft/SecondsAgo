@@ -1,23 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://dsggfn1u1ve5u"]
+[gd_scene load_steps=9 format=3 uid="uid://dsggfn1u1ve5u"]
 
 [ext_resource type="Script" uid="uid://bfy86qj5ihtlu" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dsuxo2e0yo6oq" path="res://scenes/map.tscn" id="2_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://808wcpaio5cv" path="res://scenes/camera.tscn" id="2_yqjtg"]
-[ext_resource type="PackedScene" uid="uid://cqfsbdepu72lu" path="res://scenes/enemy.tscn" id="4_gee14"]
-[ext_resource type="PackedScene" uid="uid://f018vcx0tgvp" path="res://scenes/ghost_player.tscn" id="4_iywne"]
-[ext_resource type="PackedScene" uid="uid://b2n6gwk6gtwb7" path="res://scenes/bullet.tscn" id="6_p57ef"]
 [ext_resource type="AudioStream" uid="uid://bjr55uf0twrdt" path="res://assets/sounds/shoot-g.ogg" id="8_gee14"]
 [ext_resource type="AudioStream" uid="uid://di4r5i77taohs" path="res://assets/sounds/hurt-d.ogg" id="9_0tnpc"]
 [ext_resource type="AudioStream" uid="uid://doi8af713jux6" path="res://assets/sounds/BGM.mp3" id="10_vtaks"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gee14"]
-blend_mode = 1
-
-[sub_resource type="SystemFont" id="SystemFont_u5sy4"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
-font_size = 60
 
 [sub_resource type="Environment" id="Environment_u5sy4"]
 background_mode = 3
@@ -28,9 +17,8 @@ glow_hdr_threshold = 0.49
 glow_hdr_scale = 0.14
 glow_hdr_luminance_cap = 256.0
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("ghost_player", "timer")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("timer")]
 script = ExtResource("1_lbhrr")
-ghost_player = NodePath("GhostPlayer")
 timer = NodePath("TimerLoop")
 
 [node name="Map" parent="." instance=ExtResource("2_0tnpc")]
@@ -39,17 +27,8 @@ position = Vector2(12.988508, -6.625957)
 [node name="Dust" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="Enemy" parent="." instance=ExtResource("4_gee14")]
-visible = false
-y_sort_enabled = true
-position = Vector2(-303, 252)
-
-[node name="Player" parent="." node_paths=PackedStringArray("bullet") instance=ExtResource("1_uwrxv")]
+[node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 motion_mode = 1
-bullet = NodePath("../Bullet")
-
-[node name="GhostPlayer" parent="." instance=ExtResource("4_iywne")]
-visible = false
 
 [node name="Camera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_yqjtg")]
 unique_name_in_owner = true
@@ -58,48 +37,6 @@ target = NodePath("../Player")
 [node name="TimerLoop" type="Timer" parent="."]
 process_callback = 0
 wait_time = 10.0
-
-[node name="Bullet" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("6_p57ef")]
-visible = false
-material = SubResource("CanvasItemMaterial_gee14")
-position = Vector2(0, -1)
-max_contacts_reported = 10
-camera = NodePath("../Camera")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="LoopLabel" type="Label" parent="CanvasLayer"]
-unique_name_in_owner = true
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -336.0
-offset_top = -2.0
-offset_right = 105.0
-offset_bottom = 81.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-theme_override_fonts/font = SubResource("SystemFont_u5sy4")
-text = "LOOP:1"
-label_settings = SubResource("LabelSettings_vtaks")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TimeLabel" type="Label" parent="CanvasLayer"]
-unique_name_in_owner = true
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -66.0
-offset_right = 375.0
-offset_bottom = 83.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-theme_override_fonts/font = SubResource("SystemFont_u5sy4")
-text = "TIME:10.0"
-label_settings = SubResource("LabelSettings_vtaks")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.45452422, 0.45452428, 0.45452416, 1)
@@ -131,8 +68,5 @@ stream = ExtResource("10_vtaks")
 volume_db = -23.042
 autoplay = true
 
-[connection signal="hit" from="Player" to="." method="_on_player_hit"]
-[connection signal="restart" from="Player" to="." method="_on_player_restart"]
-[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
 [connection signal="timeout" from="TimerLoop" to="." method="_on_timer_loop_timeout"]
 [connection signal="timeout" from="TimerLoop" to="Map" method="_on_timer_loop_timeout"]
