@@ -22,4 +22,10 @@ func _physics_process(delta: float) -> void: # 每个物理帧调用
 
 func _on_area_2d_area_entered(area: Area2D) -> void: # 当子弹碰撞区域与其他区域接触时调用
 	if (area.name == "PlayerArea" and birth_time > 0.2) or area.name == "EnemyArea": # 碰到玩家（出生超过0.2秒）或敌人
-		%DeathAudio.play() # 播放爆炸音效
+		%BoomAudio.play() # 播放爆炸音效
+
+
+func _on_body_entered(_body: Node) -> void:
+	%CollisionAudio.play()
+		
+	

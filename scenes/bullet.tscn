@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2n6gwk6gtwb7"]
+[gd_scene load_steps=10 format=3 uid="uid://b2n6gwk6gtwb7"]
 
 [ext_resource type="Texture2D" uid="uid://bwttldkf7kkwm" path="res://assets/sprites/bullet/bullet.png" id="1_mkf8s"]
 [ext_resource type="Script" uid="uid://crebjmh7lb86q" path="res://scripts/bullet.gd" id="1_y25gk"]
-[ext_resource type="AudioStream" uid="uid://bvhxmr2ql107q" path="res://assets/sounds/explosion-c.ogg" id="3_l5glv"]
+[ext_resource type="AudioStream" uid="uid://b1qqyflbu6jl4" path="res://assets/sounds/子弹/击中实体.mp3" id="3_eoqba"]
+[ext_resource type="AudioStream" uid="uid://bvmp6stst7hs2" path="res://assets/sounds/子弹/击中墙壁.wav" id="4_eoqba"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y25gk"]
 friction = 0.0
@@ -55,10 +56,14 @@ rotation = 1.5707964
 scale = Vector2(0.407, 0.407)
 shape = SubResource("CapsuleShape2D_y25gk")
 
-[node name="DeathAudio" type="AudioStreamPlayer2D" parent="."]
+[node name="BoomAudio" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
-stream = ExtResource("3_l5glv")
+stream = ExtResource("3_eoqba")
 volume_db = 9.964
+
+[node name="CollisionAudio" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_eoqba")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="area_entered" from="BulletArea" to="." method="_on_area_2d_area_entered"]

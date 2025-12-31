@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dsggfn1u1ve5u"]
+[gd_scene load_steps=8 format=3 uid="uid://dsggfn1u1ve5u"]
 
 [ext_resource type="Script" uid="uid://bfy86qj5ihtlu" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dsuxo2e0yo6oq" path="res://scenes/map.tscn" id="2_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://808wcpaio5cv" path="res://scenes/camera.tscn" id="2_yqjtg"]
-[ext_resource type="AudioStream" uid="uid://bjr55uf0twrdt" path="res://assets/sounds/shoot-g.ogg" id="8_gee14"]
-[ext_resource type="AudioStream" uid="uid://di4r5i77taohs" path="res://assets/sounds/hurt-d.ogg" id="9_0tnpc"]
+[ext_resource type="AudioStream" uid="uid://jyk0hhrsy0ui" path="res://assets/sounds/子弹/子弹发射.mp3" id="5_gee14"]
 [ext_resource type="AudioStream" uid="uid://doi8af713jux6" path="res://assets/sounds/BGM.mp3" id="10_vtaks"]
 
 [sub_resource type="Environment" id="Environment_u5sy4"]
@@ -57,11 +56,7 @@ unique_name_in_owner = true
 
 [node name="ShootAudio" type="AudioStreamPlayer2D" parent="Audio"]
 unique_name_in_owner = true
-stream = ExtResource("8_gee14")
-
-[node name="HurtAudio" type="AudioStreamPlayer2D" parent="Audio"]
-unique_name_in_owner = true
-stream = ExtResource("9_0tnpc")
+stream = ExtResource("5_gee14")
 
 [node name="BGM" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("10_vtaks")

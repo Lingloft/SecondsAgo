@@ -22,6 +22,8 @@ var shoot_cooldown: float = 0.0 # 射击冷却计时器，记录距离上次射�
 var dead: bool = false # 玩家是否已死亡，死亡后不再响应输入
 
 func _ready() -> void: # 节点进入场景树时调用
+	# 播放transition音效，表示玩家已准备好
+	%TransitionAudio.play()
 	animation.play("show") # 播放出场动画（玩家从地上冒出来）
 	await animation.animation_finished # 等待出场动画播放完毕
 	animation.play("idle") # 切换到待机动画

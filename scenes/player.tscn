@@ -1,9 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://cgjj2bmatef67"]
+[gd_scene load_steps=20 format=3 uid="uid://cgjj2bmatef67"]
 
 [ext_resource type="Texture2D" uid="uid://b8ytc3qup13h4" path="res://assets/sprites/player/player.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://rq1sw5se0i57" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://wsx3msb15q3c" path="res://assets/sprites/player/shadow.png" id="2_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://dng2ndfwi5jdk" path="res://assets/sprites/player/show.png" id="4_dqkch"]
+[ext_resource type="AudioStream" uid="uid://brlug0dyoshaw" path="res://assets/sounds/transfer.wav" id="5_qlg0r"]
+[ext_resource type="AudioStream" uid="uid://di4r5i77taohs" path="res://assets/sounds/hurt-d.ogg" id="6_tuyoq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fjrip"]
 radius = 4.0
@@ -135,5 +137,13 @@ animation = &"show"
 autoplay = "show"
 frame = 4
 frame_progress = 1.0
+
+[node name="TransitionAudio" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("5_qlg0r")
+
+[node name="HurtAudio" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("6_tuyoq")
 
 [connection signal="area_entered" from="PlayerArea" to="." method="_on_area_2d_area_entered"]
