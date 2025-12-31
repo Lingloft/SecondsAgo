@@ -72,7 +72,7 @@ func _on_timer_loop_timeout() -> void: # 计时器超时时调用（每10秒一�
 	EventBus.loop_timeout.emit() # 发送循环超时信号，通知地图切换墙壁
 
 func fade_screen() -> void: # 屏幕闪白效果
-	var glow: float = $WorldEnvironment.environment.glow_intensity # 获取当前辉光强度
+	var glow: float = 2 # 获取当前辉光强度
 	$WorldEnvironment.environment.glow_intensity = 10 # 瞬间提高辉光强度（闪白）
 	create_tween().tween_property($WorldEnvironment.environment, "glow_intensity", glow, 0.8) # 0.8秒内恢复原来的辉光强度
 
