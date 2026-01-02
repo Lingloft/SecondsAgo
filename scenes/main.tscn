@@ -120,19 +120,25 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "返回"
+icon = ExtResource("4_tbgi4")
 flat = true
+icon_alignment = 1
 
 [node name="Restart" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "重玩"
+icon = ExtResource("4_tbgi4")
 flat = true
+icon_alignment = 1
 
 [node name="Cancel" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "继续"
+icon = ExtResource("4_tbgi4")
 flat = true
+icon_alignment = 1
 
 [node name="GameOverMenu" type="Control" parent="UI"]
 visible = false
@@ -163,13 +169,17 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "返回"
+icon = ExtResource("4_tbgi4")
 flat = true
+icon_alignment = 1
 
 [node name="Restart" type="Button" parent="UI/GameOverMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "重玩"
+icon = ExtResource("4_tbgi4")
 flat = true
+icon_alignment = 1
 
 [node name="GameUI" type="Control" parent="UI"]
 visible = false
@@ -197,6 +207,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 71
 text = "暂停"
 flat = true
+icon_alignment = 1
 
 [node name="TopLabel" type="CanvasLayer" parent="UI"]
 visible = false
