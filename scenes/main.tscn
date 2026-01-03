@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://dqqbblk6vnnqr"]
 
 [ext_resource type="Script" uid="uid://dap6kr322rdv4" path="res://scripts/main.gd" id="1_o5qli"]
-[ext_resource type="Texture2D" uid="uid://b4835ltj33lyw" path="res://assets/pics/background.jpg" id="2_0wfyh"]
-[ext_resource type="Texture2D" uid="uid://2agx81jsu3h0" path="res://assets/pics/logo.png" id="3_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://kypm6md8d4kg" path="res://assets/pics/菜单.png" id="2_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://bkgu8oowhxm22" path="res://assets/pics/button.png" id="4_tbgi4"]
+[ext_resource type="FontFile" uid="uid://dblh6jmijndby" path="res://assets/fonts/AlimamaFangYuanTiVF-Thin.ttf" id="4_tefeu"]
 
 [sub_resource type="SystemFont" id="SystemFont_0wfyh"]
 
@@ -31,24 +31,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Background" type="TextureRect" parent="UI/MainMenu"]
-layout_mode = 0
-offset_left = -821.0
-offset_top = -475.0
-offset_right = 1000.0
-offset_bottom = 549.0
-texture = ExtResource("2_0wfyh")
-
-[node name="Logo" type="TextureRect" parent="UI/MainMenu"]
-layout_mode = 0
-offset_left = -662.0
-offset_top = -367.0
-offset_right = 744.0
-offset_bottom = -10.0
-texture = ExtResource("3_jyhfs")
-
 [node name="ColorRect" type="ColorRect" parent="UI/MainMenu"]
-visible = false
 layout_mode = 0
 offset_left = -827.00006
 offset_top = -549.0
@@ -57,33 +40,80 @@ offset_bottom = -521.85645
 scale = Vector2(42.92, 42.92)
 color = Color(0, 0, 0, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu"]
+[node name="Background" type="TextureRect" parent="UI/MainMenu"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -255.0
-offset_top = -107.0
-offset_right = 321.0
-offset_bottom = 235.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -429.0
+offset_top = -438.0
+offset_right = 1392.0
+offset_bottom = 1383.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.48152673, 0.48152673)
+texture = ExtResource("2_jyhfs")
+expand_mode = 5
+
+[node name="Exit" type="Button" parent="UI/MainMenu"]
+layout_mode = 0
+offset_left = 293.0
+offset_top = 280.0
+offset_right = 423.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.29411766, 0.14901961, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("4_tefeu")
+theme_override_font_sizes/font_size = 20
+text = "退 出 游 戏"
+flat = true
+alignment = 2
+icon_alignment = 1
+
+[node name="label" type="Label" parent="UI/MainMenu"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = -258.0
+offset_right = 448.0
+offset_bottom = -203.0
+theme_override_colors/font_color = Color(0.29411766, 0.14901961, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("4_tefeu")
+theme_override_font_sizes/font_size = 31
+text = "几秒之前-Seconds Ago"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -234.0
+offset_right = 421.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="Start" type="Button" parent="UI/MainMenu/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 71
-text = "开始游戏"
-icon = ExtResource("4_tbgi4")
+theme_override_colors/font_color = Color(0.29411766, 0.14901961, 0.08627451, 1)
+theme_override_fonts/font = ExtResource("4_tefeu")
+theme_override_font_sizes/font_size = 31
+text = "开 始 游 戏"
 flat = true
 icon_alignment = 1
 
-[node name="Exit" type="Button" parent="UI/MainMenu/VBoxContainer"]
+[node name="Start2" type="Label" parent="UI/MainMenu/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 71
-text = "退出游戏"
-icon = ExtResource("4_tbgi4")
-flat = true
-icon_alignment = 1
+theme_override_colors/font_color = Color(0.5882353, 0.3254902, 0.09411765, 1)
+theme_override_fonts/font = ExtResource("4_tefeu")
+theme_override_font_sizes/font_size = 25
+text = "Start Game"
+horizontal_alignment = 1
 
 [node name="PauseMenu" type="Control" parent="UI"]
 visible = false
@@ -118,6 +148,7 @@ grow_vertical = 2
 
 [node name="Back" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_tefeu")
 theme_override_font_sizes/font_size = 71
 text = "返回"
 icon = ExtResource("4_tbgi4")
@@ -126,6 +157,7 @@ icon_alignment = 1
 
 [node name="Restart" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_tefeu")
 theme_override_font_sizes/font_size = 71
 text = "重玩"
 icon = ExtResource("4_tbgi4")
@@ -134,6 +166,7 @@ icon_alignment = 1
 
 [node name="Cancel" type="Button" parent="UI/PauseMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_tefeu")
 theme_override_font_sizes/font_size = 71
 text = "继续"
 icon = ExtResource("4_tbgi4")
@@ -167,6 +200,7 @@ grow_vertical = 2
 
 [node name="Back" type="Button" parent="UI/GameOverMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_tefeu")
 theme_override_font_sizes/font_size = 71
 text = "返回"
 icon = ExtResource("4_tbgi4")
@@ -175,6 +209,7 @@ icon_alignment = 1
 
 [node name="Restart" type="Button" parent="UI/GameOverMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_tefeu")
 theme_override_font_sizes/font_size = 71
 text = "重玩"
 icon = ExtResource("4_tbgi4")
@@ -247,8 +282,8 @@ vertical_alignment = 1
 
 [node name="GameContainer" type="Node2D" parent="."]
 
+[connection signal="button_down" from="UI/MainMenu/Exit" to="." method="_on_exit_button_down"]
 [connection signal="button_down" from="UI/MainMenu/VBoxContainer/Start" to="." method="_on_start_button_down"]
-[connection signal="button_down" from="UI/MainMenu/VBoxContainer/Exit" to="." method="_on_exit_button_down"]
 [connection signal="button_down" from="UI/PauseMenu/VBoxContainer/Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="UI/PauseMenu/VBoxContainer/Restart" to="." method="_on_restart_button_down"]
 [connection signal="button_down" from="UI/PauseMenu/VBoxContainer/Cancel" to="." method="_on_cancel_button_down"]
